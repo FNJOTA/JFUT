@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JFUT - Tu Portal de Fútbol</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1920px;
+            margin: 0 auto;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 2px solid #334155;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .logo {
+            font-size: 3rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #00ff87, #60efff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(0, 255, 135, 0.3);
+        }
+
+        .nav-controls {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            padding: 12px 25px;
+            background: rgba(30, 41, 59, 0.8);
+            border: 2px solid #475569;
+            border-radius: 12px;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-btn:hover, .nav-btn:focus {
+            background: linear-gradient(135deg, #00ff87, #60efff);
+            border-color: #00ff87;
+            color: #000000;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 255, 135, 0.4);
+            outline: none;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 30px;
+            min-height: 70vh;
+            transition: all 0.3s ease;
+        }
+
+        /* Theater Mode Styles */
+        .theater-mode .container {
+            max-width: none;
+            padding: 10px;
+        }
+
+        .theater-mode .header {
+            padding: 10px 0;
+            margin-bottom: 15px;
+        }
+
+        .theater-mode .main-content {
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+
+        .theater-mode .matches-sidebar {
+            display: none;
+        }
+
+        .theater-mode .video-container {
+            height: calc(100vh - 120px) !important;
+            border-radius: 0;
+        }
+
+        .theater-mode .video-section {
+            padding: 15px;
+            border-radius: 0;
+        }
+
+        /* Video Player */
+        .video-section {
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: 20px;
+            padding: 30px;
+            border: 2px solid #334155;
+            backdrop-filter: blur(10px);
+        }
+
+        .video-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .match-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #60efff;
+        }
+
+        .video-controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            padding: 8px 16px;
+            background: rgba(51, 65, 85, 0.8);
+            border: 1px solid #475569;
+            border-radius: 8px;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .control-btn:hover, .control-btn:focus {
+            background: #00ff87;
+            color: #000000;
+            transform: scale(1.05);
+            outline: none;
+        }
+
+        .control-btn.active {
+            background: #00ff87;
+            color: #000000;
+        }
+
+        .video-container {
+            width: 100%;
+            height: 500px;
+            background: #000000;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 3px solid #334155;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .video-embed {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-placeholder {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            background: linear-gradient(45deg, #1e293b, #334155);
+        }
+
+        .placeholder-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.7;
+        }
+
+        /* Matches Sidebar */
+        .matches-sidebar {
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: 20px;
+            padding: 25px;
+            border: 2px solid #334155;
+            backdrop-filter: blur(10px);
+            max-height: 80vh;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #60efff;
+        }
+
+        .match-item {
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+        }
+
+        .match-item:hover, .match-item:focus {
+            background: rgba(0, 255, 135, 0.1);
+            border-color: #00ff87;
+            transform: translateX(10px);
+            outline: none;
+        }
+
+        .match-item.selected {
+            background: linear-gradient(135deg, rgba(0, 255, 135, 0.2), rgba(96, 239, 255, 0.2));
+            border-color: #00ff87;
+            box-shadow: 0 0 20px rgba(0, 255, 135, 0.3);
+        }
+
+        .match-teams {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .match-time {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            margin-bottom: 10px;
+        }
+
+        .match-league {
+            font-size: 0.8rem;
+            color: #60efff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .live-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ef4444;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        /* Responsive para SmartTV (1920px+) */
+        @media (min-width: 1920px) {
+            .container {
+                padding: 40px;
+            }
+            
+            .logo {
+                font-size: 5rem;
+            }
+            
+            .nav-btn {
+                padding: 20px 40px;
+                font-size: 1.5rem;
+            }
+            
+            .video-container {
+                height: 800px;
+            }
+            
+            .match-item {
+                padding: 30px;
+                margin-bottom: 25px;
+            }
+            
+            .match-title {
+                font-size: 2.5rem;
+            }
+            
+            .control-btn {
+                padding: 12px 24px;
+                font-size: 1.2rem;
+            }
+            
+            .match-teams {
+                font-size: 1.5rem;
+            }
+            
+            .match-time {
+                font-size: 1.2rem;
+            }
+            
+            .match-league {
+                font-size: 1rem;
+            }
+        }
+
+        /* Responsive para tablets */
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .matches-sidebar {
+                max-height: 300px;
+                order: -1;
+            }
+            
+            .video-container {
+                height: 400px;
+            }
+            
+            .logo {
+                font-size: 2.5rem;
+            }
+            
+            .nav-controls {
+                gap: 10px;
+            }
+            
+            .nav-btn {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Responsive para móviles */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px 0;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .nav-controls {
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            
+            .nav-btn {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+                min-width: auto;
+            }
+            
+            .video-section {
+                padding: 15px;
+                border-radius: 15px;
+            }
+            
+            .video-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .match-title {
+                font-size: 1.3rem;
+            }
+            
+            .video-controls {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .control-btn {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+            
+            .video-container {
+                height: 250px;
+                border-radius: 10px;
+            }
+            
+            .matches-sidebar {
+                padding: 15px;
+                border-radius: 15px;
+                max-height: 250px;
+            }
+            
+            .sidebar-title {
+                font-size: 1.2rem;
+            }
+            
+            .match-item {
+                padding: 15px;
+                margin-bottom: 10px;
+            }
+            
+            .match-teams {
+                font-size: 1rem;
+            }
+            
+            .match-time {
+                font-size: 0.8rem;
+            }
+            
+            .match-league {
+                font-size: 0.7rem;
+            }
+        }
+
+        /* Para dispositivos muy pequeños */
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 1.5rem;
+            }
+            
+            .nav-btn {
+                padding: 6px 10px;
+                font-size: 0.7rem;
+            }
+            
+            .video-container {
+                height: 200px;
+            }
+            
+            .match-title {
+                font-size: 1.1rem;
+            }
+            
+            .control-btn {
+                padding: 6px 10px;
+                font-size: 0.7rem;
+            }
+        }
+
+        /* Focus styles para navegación con control remoto */
+        .focusable:focus {
+            outline: 3px solid #00ff87;
+            outline-offset: 3px;
+        }
+
+        /* Scrollbar personalizado */
+        .matches-sidebar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .matches-sidebar::-webkit-scrollbar-track {
+            background: rgba(30, 41, 59, 0.3);
+            border-radius: 10px;
+        }
+
+        .matches-sidebar::-webkit-scrollbar-thumb {
+            background: #00ff87;
+            border-radius: 10px;
+        }
+
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            flex-direction: column;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #00ff87;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Theater mode toggle animation */
+        .theater-toggle {
+            animation: theaterTransition 0.5s ease;
+        }
+
+        @keyframes theaterTransition {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        /* Autoplay indicator */
+        .autoplay-indicator {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(0, 255, 135, 0.9);
+            color: black;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            z-index: 10;
+            animation: fadeInOut 3s ease;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        /* Auto-start indicator */
+        .auto-start-indicator {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 255, 135, 0.95);
+            color: black;
+            padding: 15px 25px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            z-index: 20;
+            animation: autoStartPulse 2s ease;
+            border: 3px solid #00ff87;
+        }
+
+        @keyframes autoStartPulse {
+            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">JFUT</div>
+            <div class="nav-controls">
+                <button class="nav-btn focusable" onclick="refreshPage()">🔄 Recargar</button>
+                <button class="nav-btn focusable" onclick="toggleTheaterMode()" id="theaterBtn">📺 Pantalla Grande</button>
+                <button class="nav-btn focusable" onclick="toggleFullscreen()">⛶ Pantalla Completa</button>
+                <button class="nav-btn focusable" onclick="showSettings()">⚙️ Configuración</button>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <section class="video-section">
+                <div class="video-header">
+                    <h2 class="match-title" id="currentMatch">Iniciando transmisión automática...</h2>
+                    <div class="video-controls">
+                        <button class="control-btn focusable" onclick="reloadStream()">🔄 Recargar Stream</button>
+                        <button class="control-btn focusable" onclick="changeQuality()">HD</button>
+                        <button class="control-btn focusable" onclick="toggleMute()">🔊</button>
+                        <button class="control-btn focusable active" onclick="toggleAutoplay()" id="autoplayBtn">🎬 Autoplay: ON</button>
+                    </div>
+                </div>
+                <div class="video-container" id="videoContainer">
+                    <div class="video-placeholder">
+                        <div class="placeholder-icon">⚽</div>
+                        <h3>Iniciando JFUT</h3>
+                        <p>Preparando transmisión automática...</p>
+                    </div>
+                </div>
+            </section>
+
+            <aside class="matches-sidebar">
+                <h3 class="sidebar-title">⚽ Partidos en Vivo</h3>
+                <div id="matchesList">
+                    <!-- Los partidos se cargarán aquí -->
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <script>
+        // Datos de ejemplo de partidos
+        const matchesData = [
+            {
+                id: 1,
+                teams: "Guaraní Vs. U de Chile",
+                time: "EN VIVO",
+                league: "Sudamericana",
+                isLive: true,
+                streams: [
+                    { name: "Servidor 1", url: "https://tiogol.com/vivo/canal.php?stream=dsports" },
+                    { name: "Servidor 2", url: "https://la14hd.com/vivo/canal.php?stream=dsports" }
+                ]
+            }
+        ];
+
+        let currentMatch = null;
+        let currentStreamIndex = 0;
+        let selectedIndex = 0;
+        let focusableElements = [];
+        let isTheaterMode = false;
+        let autoplayEnabled = true;
+        let autoStartTimer = null;
+
+        // Inicializar la aplicación
+        function initApp() {
+            loadMatches();
+            setupKeyboardNavigation();
+            updateFocusableElements();
+            
+            // Iniciar automáticamente después de 2 segundos
+            autoStartTimer = setTimeout(() => {
+                autoStartTransmission();
+            }, 2000);
+        }
+
+        // Inicio automático de transmisión
+        function autoStartTransmission() {
+            if (matchesData.length > 0) {
+                showAutoStartIndicator();
+                setTimeout(() => {
+                    selectMatch(matchesData[0], 0);
+                    showNotification('▶️ Transmisión iniciada automáticamente');
+                }, 1000);
+            }
+        }
+
+        // Mostrar indicador de inicio automático
+        function showAutoStartIndicator() {
+            const videoContainer = document.getElementById('videoContainer');
+            const indicator = document.createElement('div');
+            indicator.className = 'auto-start-indicator';
+            indicator.textContent = '▶️ Iniciando automáticamente...';
+            videoContainer.appendChild(indicator);
+            
+            setTimeout(() => {
+                if (indicator.parentNode) {
+                    indicator.remove();
+                }
+            }, 2000);
+        }
+
+        // Cargar partidos en la sidebar
+        function loadMatches() {
+            const matchesList = document.getElementById('matchesList');
+            matchesList.innerHTML = '';
+
+            matchesData.forEach((match, index) => {
+                const matchElement = document.createElement('div');
+                matchElement.className = 'match-item focusable';
+                matchElement.setAttribute('tabindex', '0');
+                matchElement.onclick = () => selectMatch(match, index);
+                
+                matchElement.innerHTML = `
+                    ${match.isLive ? '<div class="live-indicator">EN VIVO</div>' : ''}
+                    <div class="match-teams">${match.teams}</div>
+                    <div class="match-time">${match.time}</div>
+                    <div class="match-league">${match.league}</div>
+                `;
+
+                matchesList.appendChild(matchElement);
+            });
+        }
+
+        // Seleccionar partido
+        function selectMatch(match, index) {
+            // Cancelar timer de inicio automático si existe
+            if (autoStartTimer) {
+                clearTimeout(autoStartTimer);
+                autoStartTimer = null;
+            }
+
+            // Remover selección anterior
+            document.querySelectorAll('.match-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+
+            // Agregar selección actual
+            const matchItems = document.querySelectorAll('.match-item');
+            if (matchItems[index]) {
+                matchItems[index].classList.add('selected');
+            }
+
+            currentMatch = match;
+            currentStreamIndex = 0;
+            
+            document.getElementById('currentMatch').textContent = match.teams;
+            loadStream(match.streams[0].url, true);
+        }
+
+        // Cargar stream con autoplay forzado
+        function loadStream(url, showAutoplayIndicator = false) {
+            const videoContainer = document.getElementById('videoContainer');
+            
+            // Mostrar loading
+            videoContainer.innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Cargando transmisión...</p>
+                </div>
+            `;
+
+            // Crear iframe con autoplay forzado
+            setTimeout(() => {
+                // Construir URL con parámetros de autoplay mejorados
+                const separator = url.includes('?') ? '&' : '?';
+                const autoplayParams = 'autoplay=1&muted=1&controls=1&enablejsapi=1&playsinline=1&rel=0&showinfo=0&modestbranding=1';
+                const fullUrl = `${url}${separator}${autoplayParams}`;
+                
+                videoContainer.innerHTML = `
+                    ${showAutoplayIndicator ? '<div class="autoplay-indicator">▶️ Reproducción automática</div>' : ''}
+                    <iframe class="video-embed" 
+                            src="${fullUrl}" 
+                            frameborder="0" 
+                            allowfullscreen
+                            allow="autoplay; encrypted-media; picture-in-picture; accelerometer; gyroscope"
+                            sandbox="allow-same-origin allow-scripts allow-presentation allow-forms"
+                            onload="handleIframeLoad(this)">
+                    </iframe>
+                `;
+            }, 1000);
+        }
+
+        // Manejar carga del iframe
+        function handleIframeLoad(iframe) {
+            try {
+                // Intentar forzar reproducción automática mediante postMessage
+                setTimeout(() => {
+                    if (iframe.contentWindow) {
+                        iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                    }
+                }, 500);
+            } catch (e) {
+                console.log('AutoPlay handling completed');
+            }
+        }
+
+        // Toggle Theater Mode
+        function toggleTheaterMode() {
+            const body = document.body;
+            const theaterBtn = document.getElementById('theaterBtn');
+            
+            isTheaterMode = !isTheaterMode;
+            
+            if (isTheaterMode) {
+                body.classList.add('theater-mode');
+                body.classList.add('theater-toggle');
+                theaterBtn.textContent = '📱 Vista Normal';
+                theaterBtn.classList.add('active');
+                showNotification('🎬 Modo Pantalla Grande Activado');
+            } else {
+                body.classList.remove('theater-mode');
+                body.classList.add('theater-toggle');
+                theaterBtn.textContent = '📺 Pantalla Grande';
+                theaterBtn.classList.remove('active');
+                showNotification('📱 Vista Normal Activada');
+            }
+            
+            // Remover clase de animación después de la transición
+            setTimeout(() => {
+                body.classList.remove('theater-toggle');
+            }, 500);
+        }
+
+        // Toggle Autoplay
+        function toggleAutoplay() {
+            const autoplayBtn = document.getElementById('autoplayBtn');
+            autoplayEnabled = !autoplayEnabled;
+            
+            if (autoplayEnabled) {
+                autoplayBtn.textContent = '🎬 Autoplay: ON';
+                autoplayBtn.classList.add('active');
+                showNotification('▶️ Autoplay Activado');
+            } else {
+                autoplayBtn.textContent = '⏸️ Autoplay: OFF';
+                autoplayBtn.classList.remove('active');
+                showNotification('⏸️ Autoplay Desactivado');
+            }
+        }
+
+        // Recargar stream actual
+        function reloadStream() {
+            if (currentMatch && currentMatch.streams[currentStreamIndex]) {
+                loadStream(currentMatch.streams[currentStreamIndex].url);
+                showNotification('🔄 Stream recargado');
+            }
+        }
+
+        // Cambiar calidad/servidor
+        function changeQuality() {
+            if (currentMatch && currentMatch.streams.length > 1) {
+                currentStreamIndex = (currentStreamIndex + 1) % currentMatch.streams.length;
+                const newStream = currentMatch.streams[currentStreamIndex];
+                loadStream(newStream.url);
+                
+                // Mostrar notificación
+                showNotification(`📡 Cambiado a: ${newStream.name}`);
+            } else {
+                showNotification('📡 Solo hay un servidor disponible');
+            }
+        }
+
+        // Toggle mute
+        function toggleMute() {
+            const iframe = document.querySelector('.video-embed');
+            if (iframe) {
+                try {
+                    iframe.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
+                    showNotification('🔇 Silenciado');
+                } catch (e) {
+                    showNotification('🔊 Control de audio enviado al reproductor');
+                }
+            }
+        }
+
+        // Recargar página
+        function refreshPage() {
+            showNotification('🔄 Recargando página...');
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
+        }
+
+        // Toggle pantalla completa
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                const videoContainer = document.getElementById('videoContainer');
+                if (videoContainer.requestFullscreen) {
+                    videoContainer.requestFullscreen();
+                } else if (videoContainer.webkitRequestFullscreen) {
+                    videoContainer.webkitRequestFullscreen();
+                } else if (videoContainer.msRequestFullscreen) {
+                    videoContainer.msRequestFullscreen();
+                }
+                showNotification('⛶ Pantalla completa activada - ESC para salir');
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+                showNotification('⛶ Pantalla completa desactivada');
+            }
+        }
+
+        // Mostrar configuración
+        function showSettings() {
+            const settings = `
+🎮 Controles disponibles:
+━━━━━━━━━━━━━━━━━━━
+🖱️ Ratón/Touch: Click directo
+⌨️ Teclado:
+  • ← → : Cambiar servidor
+  • ↑ ↓ : Navegar menú  
+  • Enter: Seleccionar
+  • ESC: Salir/Volver
+  • T: Modo teatro
+  • F: Pantalla completa
+
+📱 Móvil: Touch optimizado
+📺 Smart TV: Control remoto compatible
+            `;
+            showNotification(settings);
+        }
+
+        // Mostrar notificación mejorada
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: rgba(0, 255, 135, 0.95);
+                color: black;
+                padding: 15px 25px;
+                border-radius: 12px;
+                font-weight: bold;
+                z-index: 10000;
+                animation: slideIn 0.4s ease;
+                max-width: 350px;
+                word-wrap: break-word;
+                white-space: pre-line;
+                font-size: 0.9rem;
+                border: 2px solid #00ff87;
+                backdrop-filter: blur(10px);
+                box-shadow: 0 10px 30px rgba(0, 255, 135, 0.3);
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.4s ease';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.remove();
+                    }
+                }, 400);
+            }, message.length > 100 ? 5000 : 3000);
+        }
+
+        // Actualizar elementos enfocables
+        function updateFocusableElements() {
+            focusableElements = Array.from(document.querySelectorAll('.focusable'));
+        }
+
+        // Configurar navegación con teclado/control remoto
+        function setupKeyboardNavigation() {
+            document.addEventListener('keydown', (e) => {
+                switch(e.key) {
+                    case 'ArrowUp':
+                        e.preventDefault();
+                        navigateUp();
+                        break;
+                    case 'ArrowDown':
+                        e.preventDefault();
+                        navigateDown();
+                        break;
+                    case 'ArrowLeft':
+                        e.preventDefault();
+                        navigateLeft();
+                        break;
+                    case 'ArrowRight':
+                        e.preventDefault();
+                        navigateRight();
+                        break;
+                    case 'Enter':
+                        e.preventDefault();
+                        activateSelected();
+                        break;
+                    case 'Escape':
+                        e.preventDefault();
+                        handleEscape();
+                        break;
+                    case 't':
+                    case 'T':
+                        e.preventDefault();
+                        toggleTheaterMode();
+                        break;
+                    case 'f':
+                    case 'F':
+                        e.preventDefault();
+                        toggleFullscreen();
+                        break;
+                    case 'r':
+                    case 'R':
+                        e.preventDefault();
+                        reloadStream();
+                        break;
+                    case ' ':
+                        e.preventDefault();
+                        toggleAutoplay();
+                        break;
+                }
+            });
+        }
+
+        // Navegación hacia arriba
+        function navigateUp() {
+            updateFocusableElements();
+            if (focusableElements.length > 0) {
+                selectedIndex = Math.max(0, selectedIndex - 1);
+                focusableElements[selectedIndex].focus();
+            }
+        }
+
+        // Navegación hacia abajo
+        function navigateDown() {
+            updateFocusableElements();
+            if (focusableElements.length > 0) {
+                selectedIndex = Math.min(focusableElements.length - 1, selectedIndex + 1);
+                focusableElements[selectedIndex].focus();
+            }
+        }
+
+        // Navegación hacia la izquierda (cambiar servidor anterior)
+        function navigateLeft() {
+            if (currentMatch && currentMatch.streams.length > 1) {
+                currentStreamIndex = currentStreamIndex === 0 ? 
+                    currentMatch.streams.length - 1 : currentStreamIndex - 1;
+                const newStream = currentMatch.streams[currentStreamIndex];
+                loadStream(newStream.url);
+                showNotification(`📡 ${newStream.name}`);
+            }
+        }
+
+        // Navegación hacia la derecha (cambiar servidor siguiente)
+        function navigateRight() {
+            changeQuality();
+        }
+
+        // Activar elemento seleccionado
+        function activateSelected() {
+            updateFocusableElements();
+            if (focusableElements[selectedIndex]) {
+                focusableElements[selectedIndex].click();
+            }
+        }
+
+        // Manejar tecla Escape
+        function handleEscape() {
+            if (document.fullscreenElement) {
+                toggleFullscreen();
+            } else if (isTheaterMode) {
+                toggleTheaterMode();
+            } else {
+                showNotification('🏠 Navegación: Usa las flechas para moverte');
+            }
+        }
+
+        // Estilos CSS adicionales para animaciones
+        const additionalStyles = `
+            @keyframes slideIn {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+
+            @keyframes slideOut {
+                from {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+            }
+
+            .notification-enter {
+                animation: slideIn 0.4s ease;
+            }
+
+            .notification-exit {
+                animation: slideOut 0.4s ease;
+            }
+        `;
+
+        // Agregar estilos adicionales
+        function addAdditionalStyles() {
+            const styleSheet = document.createElement('style');
+            styleSheet.textContent = additionalStyles;
+            document.head.appendChild(styleSheet);
+        }
+
+        // Event listeners adicionales
+        document.addEventListener('DOMContentLoaded', () => {
+            initApp();
+            addAdditionalStyles();
+        });
+
+        // Manejar visibilidad de la página
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                console.log('Página oculta - pausando actualizaciones');
+            } else {
+                console.log('Página visible - reanudando');
+                if (autoplayEnabled && currentMatch) {
+                    setTimeout(() => {
+                        reloadStream();
+                    }, 1000);
+                }
+            }
+        });
+
+        // Manejar errores de iframe
+        window.addEventListener('message', (event) => {
+            if (event.data && typeof event.data === 'string') {
+                try {
+                    const data = JSON.parse(event.data);
+                    if (data.event === 'video-error') {
+                        showNotification('⚠️ Error en el stream - Cambiando servidor...');
+                        setTimeout(changeQuality, 2000);
+                    }
+                } catch (e) {
+                    // Ignorar mensajes que no son JSON
+                }
+            }
+        });
+
+        // Auto-actualización de partidos (cada 30 segundos)
+        setInterval(() => {
+            if (!document.hidden) {
+                // Simular actualización de datos
+                loadMatches();
+            }
+        }, 30000);
+
+        // Inicializar cuando la página esté lista
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initApp);
+        } else {
+            initApp();
+        }
+    </script>
+</body>
+</html>
