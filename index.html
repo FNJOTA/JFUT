@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="frame-src *; media-src *; img-src *;">
     <title>JFUT - Tu Portal de Fútbol</title>
     <style>
         * {
@@ -193,6 +194,33 @@
             opacity: 0.7;
         }
 
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 2px solid #ef4444;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .error-title {
+            color: #ef4444;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .error-description {
+            color: #fca5a5;
+            margin-bottom: 15px;
+        }
+
+        .error-solutions {
+            color: #60efff;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
         /* Matches Sidebar */
         .matches-sidebar {
             background: rgba(15, 23, 42, 0.8);
@@ -275,83 +303,7 @@
             100% { opacity: 1; }
         }
 
-        /* Responsive para SmartTV (1920px+) */
-        @media (min-width: 1920px) {
-            .container {
-                padding: 40px;
-            }
-            
-            .logo {
-                font-size: 5rem;
-            }
-            
-            .nav-btn {
-                padding: 20px 40px;
-                font-size: 1.5rem;
-            }
-            
-            .video-container {
-                height: 800px;
-            }
-            
-            .match-item {
-                padding: 30px;
-                margin-bottom: 25px;
-            }
-            
-            .match-title {
-                font-size: 2.5rem;
-            }
-            
-            .control-btn {
-                padding: 12px 24px;
-                font-size: 1.2rem;
-            }
-            
-            .match-teams {
-                font-size: 1.5rem;
-            }
-            
-            .match-time {
-                font-size: 1.2rem;
-            }
-            
-            .match-league {
-                font-size: 1rem;
-            }
-        }
-
-        /* Responsive para tablets */
-        @media (max-width: 1024px) {
-            .main-content {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            
-            .matches-sidebar {
-                max-height: 300px;
-                order: -1;
-            }
-            
-            .video-container {
-                height: 400px;
-            }
-            
-            .logo {
-                font-size: 2.5rem;
-            }
-            
-            .nav-controls {
-                gap: 10px;
-            }
-            
-            .nav-btn {
-                padding: 10px 15px;
-                font-size: 0.9rem;
-            }
-        }
-
-        /* Responsive para móviles */
+        /* Mobile Responsive */
         @media (max-width: 768px) {
             .container {
                 padding: 10px;
@@ -377,6 +329,17 @@
                 padding: 8px 12px;
                 font-size: 0.8rem;
                 min-width: auto;
+            }
+            
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .matches-sidebar {
+                max-height: 250px;
+                order: -1;
+                padding: 15px;
             }
             
             .video-section {
@@ -408,81 +371,9 @@
                 height: 250px;
                 border-radius: 10px;
             }
-            
-            .matches-sidebar {
-                padding: 15px;
-                border-radius: 15px;
-                max-height: 250px;
-            }
-            
-            .sidebar-title {
-                font-size: 1.2rem;
-            }
-            
-            .match-item {
-                padding: 15px;
-                margin-bottom: 10px;
-            }
-            
-            .match-teams {
-                font-size: 1rem;
-            }
-            
-            .match-time {
-                font-size: 0.8rem;
-            }
-            
-            .match-league {
-                font-size: 0.7rem;
-            }
         }
 
-        /* Para dispositivos muy pequeños */
-        @media (max-width: 480px) {
-            .logo {
-                font-size: 1.5rem;
-            }
-            
-            .nav-btn {
-                padding: 6px 10px;
-                font-size: 0.7rem;
-            }
-            
-            .video-container {
-                height: 200px;
-            }
-            
-            .match-title {
-                font-size: 1.1rem;
-            }
-            
-            .control-btn {
-                padding: 6px 10px;
-                font-size: 0.7rem;
-            }
-        }
-
-        /* Focus styles para navegación con control remoto */
-        .focusable:focus {
-            outline: 3px solid #00ff87;
-            outline-offset: 3px;
-        }
-
-        /* Scrollbar personalizado */
-        .matches-sidebar::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .matches-sidebar::-webkit-scrollbar-track {
-            background: rgba(30, 41, 59, 0.3);
-            border-radius: 10px;
-        }
-
-        .matches-sidebar::-webkit-scrollbar-thumb {
-            background: #00ff87;
-            border-radius: 10px;
-        }
-
+        /* Loading spinner */
         .loading {
             display: flex;
             justify-content: center;
@@ -506,58 +397,47 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Theater mode toggle animation */
-        .theater-toggle {
-            animation: theaterTransition 0.5s ease;
-        }
-
-        @keyframes theaterTransition {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-            100% { transform: scale(1); }
-        }
-
-        /* Autoplay indicator */
-        .autoplay-indicator {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            background: rgba(0, 255, 135, 0.9);
-            color: black;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            z-index: 10;
-            animation: fadeInOut 3s ease;
-        }
-
-        @keyframes fadeInOut {
-            0%, 100% { opacity: 0; }
-            50% { opacity: 1; }
-        }
-
-        /* Auto-start indicator */
-        .auto-start-indicator {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+        /* Notification styles */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
             background: rgba(0, 255, 135, 0.95);
             color: black;
             padding: 15px 25px;
-            border-radius: 25px;
-            font-size: 1.1rem;
+            border-radius: 12px;
             font-weight: bold;
-            z-index: 20;
-            animation: autoStartPulse 2s ease;
-            border: 3px solid #00ff87;
+            z-index: 10000;
+            max-width: 350px;
+            word-wrap: break-word;
+            white-space: pre-line;
+            font-size: 0.9rem;
+            border: 2px solid #00ff87;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 255, 135, 0.3);
+            animation: slideIn 0.4s ease;
         }
 
-        @keyframes autoStartPulse {
-            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
-            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
-            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
         }
     </style>
 </head>
@@ -567,35 +447,35 @@
             <div class="logo">JFUT</div>
             
             <div class="nav-controls">
-                <button class="nav-btn focusable" onclick="refreshPage()">🔄 Recargar</button>
-                <button class="nav-btn focusable" onclick="toggleTheaterMode()" id="theaterBtn">📺 Pantalla Grande</button>
-                <button class="nav-btn focusable" onclick="toggleFullscreen()">⛶ Pantalla Completa</button>
-                <button class="nav-btn focusable" onclick="showSettings()">Pagina creada por Javier B</button>
+                <button class="nav-btn" onclick="refreshPage()">🔄 Recargar</button>
+                <button class="nav-btn" onclick="toggleTheaterMode()" id="theaterBtn">📺 Pantalla Grande</button>
+                <button class="nav-btn" onclick="toggleFullscreen()">⛶ Pantalla Completa</button>
+                <button class="nav-btn" onclick="showHelp()">❓ Ayuda</button>
             </div>
         </header>
 
         <main class="main-content">
             <section class="video-section">
                 <div class="video-header">
-                    <h2 class="match-title" id="currentMatch">Iniciando transmisión automática...</h2>
+                    <h2 class="match-title" id="currentMatch">Selecciona un partido para comenzar</h2>
                     <div class="video-controls">
-                        <button class="control-btn focusable" onclick="reloadStream()">🔄 Recargar Stream</button>
-                        <button class="control-btn focusable" onclick="changeQuality()">HD</button>
-                        <button class="control-btn focusable" onclick="toggleMute()">🔊</button>
-                        <button class="control-btn focusable active" onclick="toggleAutoplay()" id="autoplayBtn">🎬 Autoplay: ON</button>
+                        <button class="control-btn" onclick="reloadStream()">🔄 Recargar</button>
+                        <button class="control-btn" onclick="changeQuality()">📡 Servidor</button>
+                        <button class="control-btn" onclick="openInNewTab()">🔗 Abrir Directo</button>
+                        <button class="control-btn" onclick="copyStreamUrl()">📋 Copiar URL</button>
                     </div>
                 </div>
                 <div class="video-container" id="videoContainer">
                     <div class="video-placeholder">
                         <div class="placeholder-icon">⚽</div>
-                        <h3>Iniciando JFUT</h3>
-                        <p>Preparando transmisión automática...</p>
+                        <h3>JFUT - Portal de Fútbol</h3>
+                        <p>Selecciona un partido de la lista para comenzar</p>
                     </div>
                 </div>
             </section>
 
             <aside class="matches-sidebar">
-                <h3 class="sidebar-title">⚽ Partidos en Vivo</h3>
+                <h3 class="sidebar-title">⚽ Partidos Disponibles</h3>
                 <div id="matchesList">
                     <!-- Los partidos se cargarán aquí -->
                 </div>
@@ -604,63 +484,85 @@
     </div>
 
     <script>
-        // Datos de ejemplo de partidos
+        // Datos de partidos actualizados con múltiples opciones
         const matchesData = [
             {
                 id: 1,
-                teams: "Guaraní Vs. U de Chile",
+                teams: "Guaraní vs U de Chile",
                 time: "EN VIVO",
-                league: "Sudamericana",
+                league: "Copa Sudamericana",
                 isLive: true,
                 streams: [
-                    { name: "Servidor 1", url: "https://tiogol.com/vivo/canal.php?stream=dsports" }
+                    { 
+                        name: "Servidor 1", 
+                        url: "https://tiogol.com/vivo/canal.php?stream=dsports",
+                        mobile: true
+                    },
+                    { 
+                        name: "Servidor 2", 
+                        url: "https://roja.direct/canal.php?stream=dsports2",
+                        mobile: true
+                    },
+                    { 
+                        name: "YouTube Backup", 
+                        url: "https://www.youtube.com/embed/live_stream?channel=UC_example",
+                        mobile: true
+                    }
                 ]
             }
         ];
 
         let currentMatch = null;
         let currentStreamIndex = 0;
-        let selectedIndex = 0;
-        let focusableElements = [];
         let isTheaterMode = false;
-        let autoplayEnabled = true;
-        let autoStartTimer = null;
+        let isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+        // Detectar dispositivo y mostrar info
+        function detectDevice() {
+            const info = {
+                userAgent: navigator.userAgent,
+                isMobile: isMobile,
+                isGitHubPages: window.location.hostname.includes('github.io'),
+                protocol: window.location.protocol,
+                hostname: window.location.hostname
+            };
+            
+            console.log('Device Info:', info);
+            return info;
+        }
 
         // Inicializar la aplicación
         function initApp() {
+            const deviceInfo = detectDevice();
             loadMatches();
-            setupKeyboardNavigation();
-            updateFocusableElements();
             
-            // Iniciar automáticamente después de 2 segundos
-            autoStartTimer = setTimeout(() => {
-                autoStartTransmission();
-            }, 2000);
-        }
-
-        // Inicio automático de transmisión
-        function autoStartTransmission() {
-            if (matchesData.length > 0) {
-                showAutoStartIndicator();
-                setTimeout(() => {
-                    selectMatch(matchesData[0], 0);
-                    showNotification('▶️ Transmisión iniciada automáticamente');
-                }, 1000);
+            if (deviceInfo.isMobile && deviceInfo.isGitHubPages) {
+                showMobileWarning();
             }
+            
+            console.log('JFUT inicializado correctamente');
         }
 
-        // Mostrar indicador de inicio automático
-        function showAutoStartIndicator() {
-            const videoContainer = document.getElementById('videoContainer');
-            const indicator = document.createElement('div');
-            indicator.className = 'auto-start-indicator';
-            indicator.textContent = '▶️ Iniciando automáticamente...';
-            videoContainer.appendChild(indicator);
+        // Mostrar advertencia para móviles
+        function showMobileWarning() {
+            const warning = `
+📱 DISPOSITIVO MÓVIL DETECTADO
+
+Algunas transmisiones pueden no funcionar debido a:
+• Políticas de seguridad de GitHub Pages
+• Restricciones de contenido externo
+• Bloqueo de frames en móviles
+
+✅ SOLUCIONES RECOMENDADAS:
+• Usa el botón "🔗 Abrir Directo"
+• Prueba diferentes servidores
+• Considera usar un navegador de escritorio
+
+¿Necesitas ayuda? Presiona "❓ Ayuda"
+            `;
             
             setTimeout(() => {
-                if (indicator.parentNode) {
-                    indicator.remove();
-                }
+                showNotification(warning);
             }, 2000);
         }
 
@@ -671,8 +573,7 @@
 
             matchesData.forEach((match, index) => {
                 const matchElement = document.createElement('div');
-                matchElement.className = 'match-item focusable';
-                matchElement.setAttribute('tabindex', '0');
+                matchElement.className = 'match-item';
                 matchElement.onclick = () => selectMatch(match, index);
                 
                 matchElement.innerHTML = `
@@ -680,6 +581,9 @@
                     <div class="match-teams">${match.teams}</div>
                     <div class="match-time">${match.time}</div>
                     <div class="match-league">${match.league}</div>
+                    <div style="margin-top: 10px; font-size: 0.8rem; color: #94a3b8;">
+                        📡 ${match.streams.length} servidor${match.streams.length > 1 ? 'es' : ''} disponible${match.streams.length > 1 ? 's' : ''}
+                    </div>
                 `;
 
                 matchesList.appendChild(matchElement);
@@ -688,12 +592,6 @@
 
         // Seleccionar partido
         function selectMatch(match, index) {
-            // Cancelar timer de inicio automático si existe
-            if (autoStartTimer) {
-                clearTimeout(autoStartTimer);
-                autoStartTimer = null;
-            }
-
             // Remover selección anterior
             document.querySelectorAll('.match-item').forEach(item => {
                 item.classList.remove('selected');
@@ -709,54 +607,190 @@
             currentStreamIndex = 0;
             
             document.getElementById('currentMatch').textContent = match.teams;
-            loadStream(match.streams[0].url, true);
+            loadStream(match.streams[0]);
         }
 
-        // Cargar stream con autoplay forzado
-        function loadStream(url, showAutoplayIndicator = false) {
+        // Cargar stream con manejo de errores mejorado
+        function loadStream(streamInfo) {
             const videoContainer = document.getElementById('videoContainer');
             
             // Mostrar loading
             videoContainer.innerHTML = `
                 <div class="loading">
                     <div class="spinner"></div>
-                    <p>Cargando transmisión...</p>
+                    <p>Cargando ${streamInfo.name}...</p>
+                    <p style="font-size: 0.8rem; margin-top: 10px; opacity: 0.7;">
+                        Si no carga, prueba otro servidor
+                    </p>
                 </div>
             `;
 
-            // Crear iframe con autoplay forzado
+            // Intentar cargar el stream
             setTimeout(() => {
-                // Construir URL con parámetros de autoplay mejorados
-                const separator = url.includes('?') ? '&' : '?';
-                const autoplayParams = 'autoplay=1&muted=1&controls=1&enablejsapi=1&playsinline=1&rel=0&showinfo=0&modestbranding=1';
-                const fullUrl = `${url}${separator}${autoplayParams}`;
-                
-                videoContainer.innerHTML = `
-                    ${showAutoplayIndicator ? '<div class="autoplay-indicator">▶️ Reproducción automática</div>' : ''}
-                    <iframe class="video-embed" 
-                            src="${fullUrl}" 
-                            frameborder="0" 
-                            allowfullscreen
-                            allow="autoplay; encrypted-media; picture-in-picture; accelerometer; gyroscope"
-                            sandbox="allow-same-origin allow-scripts allow-presentation allow-forms"
-                            onload="handleIframeLoad(this)">
-                    </iframe>
-                `;
+                try {
+                    if (isMobile && !streamInfo.mobile) {
+                        showMobileError(streamInfo);
+                        return;
+                    }
+
+                    const iframe = document.createElement('iframe');
+                    iframe.className = 'video-embed';
+                    iframe.src = buildStreamUrl(streamInfo.url);
+                    iframe.frameBorder = '0';
+                    iframe.allowFullscreen = true;
+                    iframe.allow = 'autoplay; encrypted-media; picture-in-picture';
+                    
+                    // Manejar errores de carga
+                    iframe.onerror = () => {
+                        showStreamError(streamInfo);
+                    };
+                    
+                    iframe.onload = () => {
+                        console.log(`Stream cargado: ${streamInfo.name}`);
+                        showNotification(`✅ ${streamInfo.name} cargado correctamente`);
+                    };
+
+                    videoContainer.innerHTML = '';
+                    videoContainer.appendChild(iframe);
+                    
+                } catch (error) {
+                    console.error('Error loading stream:', error);
+                    showStreamError(streamInfo);
+                }
             }, 1000);
         }
 
-        // Manejar carga del iframe
-        function handleIframeLoad(iframe) {
-            try {
-                // Intentar forzar reproducción automática mediante postMessage
-                setTimeout(() => {
-                    if (iframe.contentWindow) {
-                        iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
-                    }
-                }, 500);
-            } catch (e) {
-                console.log('AutoPlay handling completed');
+        // Construir URL del stream con parámetros optimizados
+        function buildStreamUrl(baseUrl) {
+            const params = new URLSearchParams({
+                autoplay: '1',
+                muted: '0',
+                controls: '1',
+                playsinline: '1',
+                rel: '0'
+            });
+            
+            const separator = baseUrl.includes('?') ? '&' : '?';
+            return `${baseUrl}${separator}${params.toString()}`;
+        }
+
+        // Mostrar error específico para móviles
+        function showMobileError(streamInfo) {
+            const videoContainer = document.getElementById('videoContainer');
+            videoContainer.innerHTML = `
+                <div class="error-message">
+                    <div class="error-title">📱 Limitación de Dispositivo Móvil</div>
+                    <div class="error-description">
+                        Este servidor (${streamInfo.name}) tiene restricciones para dispositivos móviles.
+                    </div>
+                    <div class="error-solutions">
+                        <strong>💡 Soluciones:</strong><br>
+                        • Prueba otro servidor con el botón "📡 Servidor"<br>
+                        • Usa "🔗 Abrir Directo" para ver en pestaña nueva<br>
+                        • Cambia a un navegador de escritorio si es posible
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <button class="control-btn" onclick="changeQuality()">📡 Probar Otro Servidor</button>
+                        <button class="control-btn" onclick="openInNewTab()" style="margin-left: 10px;">🔗 Abrir Directo</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Mostrar error de stream
+        function showStreamError(streamInfo) {
+            const videoContainer = document.getElementById('videoContainer');
+            videoContainer.innerHTML = `
+                <div class="error-message">
+                    <div class="error-title">⚠️ Error al Cargar Stream</div>
+                    <div class="error-description">
+                        No se pudo cargar ${streamInfo.name}. Esto puede deberse a:
+                    </div>
+                    <div class="error-solutions">
+                        • Restricciones de CORS del servidor<br>
+                        • Políticas de seguridad de GitHub Pages<br>
+                        • El stream no está disponible actualmente<br>
+                        • Problemas de conectividad
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <button class="control-btn" onclick="reloadStream()">🔄 Reintentar</button>
+                        <button class="control-btn" onclick="changeQuality()" style="margin-left: 10px;">📡 Cambiar Servidor</button>
+                        <button class="control-btn" onclick="openInNewTab()" style="margin-left: 10px;">🔗 Abrir Directo</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Recargar stream actual
+        function reloadStream() {
+            if (currentMatch && currentMatch.streams[currentStreamIndex]) {
+                loadStream(currentMatch.streams[currentStreamIndex]);
+                showNotification('🔄 Recargando stream...');
+            } else {
+                showNotification('❌ No hay stream seleccionado');
             }
+        }
+
+        // Cambiar calidad/servidor
+        function changeQuality() {
+            if (currentMatch && currentMatch.streams.length > 1) {
+                currentStreamIndex = (currentStreamIndex + 1) % currentMatch.streams.length;
+                const newStream = currentMatch.streams[currentStreamIndex];
+                loadStream(newStream);
+                showNotification(`📡 Cambiando a: ${newStream.name}`);
+            } else if (currentMatch) {
+                showNotification('📡 Solo hay un servidor disponible');
+            } else {
+                showNotification('❌ Selecciona un partido primero');
+            }
+        }
+
+        // Abrir stream en nueva pestaña
+        function openInNewTab() {
+            if (currentMatch && currentMatch.streams[currentStreamIndex]) {
+                const streamUrl = currentMatch.streams[currentStreamIndex].url;
+                window.open(streamUrl, '_blank');
+                showNotification('🔗 Abriendo stream en nueva pestaña');
+            } else {
+                showNotification('❌ No hay stream seleccionado');
+            }
+        }
+
+        // Copiar URL del stream
+        function copyStreamUrl() {
+            if (currentMatch && currentMatch.streams[currentStreamIndex]) {
+                const streamUrl = currentMatch.streams[currentStreamIndex].url;
+                
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(streamUrl).then(() => {
+                        showNotification('📋 URL copiada al portapapeles');
+                    }).catch(() => {
+                        fallbackCopyText(streamUrl);
+                    });
+                } else {
+                    fallbackCopyText(streamUrl);
+                }
+            } else {
+                showNotification('❌ No hay stream seleccionado');
+            }
+        }
+
+        // Método alternativo para copiar texto
+        function fallbackCopyText(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            
+            try {
+                document.execCommand('copy');
+                showNotification('📋 URL copiada al portapapeles');
+            } catch (err) {
+                console.error('Error copying text: ', err);
+                showNotification('❌ No se pudo copiar la URL');
+            }
+            
+            document.body.removeChild(textArea);
         }
 
         // Toggle Theater Mode
@@ -768,81 +802,15 @@
             
             if (isTheaterMode) {
                 body.classList.add('theater-mode');
-                body.classList.add('theater-toggle');
                 theaterBtn.textContent = '📱 Vista Normal';
                 theaterBtn.classList.add('active');
                 showNotification('🎬 Modo Pantalla Grande Activado');
             } else {
                 body.classList.remove('theater-mode');
-                body.classList.add('theater-toggle');
                 theaterBtn.textContent = '📺 Pantalla Grande';
                 theaterBtn.classList.remove('active');
                 showNotification('📱 Vista Normal Activada');
             }
-            
-            // Remover clase de animación después de la transición
-            setTimeout(() => {
-                body.classList.remove('theater-toggle');
-            }, 500);
-        }
-
-        // Toggle Autoplay
-        function toggleAutoplay() {
-            const autoplayBtn = document.getElementById('autoplayBtn');
-            autoplayEnabled = !autoplayEnabled;
-            
-            if (autoplayEnabled) {
-                autoplayBtn.textContent = '🎬 Autoplay: ON';
-                autoplayBtn.classList.add('active');
-                showNotification('▶️ Autoplay Activado');
-            } else {
-                autoplayBtn.textContent = '⏸️ Autoplay: OFF';
-                autoplayBtn.classList.remove('active');
-                showNotification('⏸️ Autoplay Desactivado');
-            }
-        }
-
-        // Recargar stream actual
-        function reloadStream() {
-            if (currentMatch && currentMatch.streams[currentStreamIndex]) {
-                loadStream(currentMatch.streams[currentStreamIndex].url);
-                showNotification('🔄 Stream recargado');
-            }
-        }
-
-        // Cambiar calidad/servidor
-        function changeQuality() {
-            if (currentMatch && currentMatch.streams.length > 1) {
-                currentStreamIndex = (currentStreamIndex + 1) % currentMatch.streams.length;
-                const newStream = currentMatch.streams[currentStreamIndex];
-                loadStream(newStream.url);
-                
-                // Mostrar notificación
-                showNotification(`📡 Cambiado a: ${newStream.name}`);
-            } else {
-                showNotification('📡 Solo hay un servidor disponible');
-            }
-        }
-
-        // Toggle mute
-        function toggleMute() {
-            const iframe = document.querySelector('.video-embed');
-            if (iframe) {
-                try {
-                    iframe.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
-                    showNotification('🔇 Silenciado');
-                } catch (e) {
-                    showNotification('🔊 Control de audio enviado al reproductor');
-                }
-            }
-        }
-
-        // Recargar página
-        function refreshPage() {
-            showNotification('🔄 Recargando página...');
-            setTimeout(() => {
-                window.location.reload();
-            }, 1000);
         }
 
         // Toggle pantalla completa
@@ -856,7 +824,7 @@
                 } else if (videoContainer.msRequestFullscreen) {
                     videoContainer.msRequestFullscreen();
                 }
-                showNotification('⛶ Pantalla completa activada - ESC para salir');
+                showNotification('⛶ Pantalla completa - ESC para salir');
             } else {
                 if (document.exitFullscreen) {
                     document.exitFullscreen();
@@ -865,263 +833,130 @@
                 } else if (document.msExitFullscreen) {
                     document.msExitFullscreen();
                 }
-                showNotification('⛶ Pantalla completa desactivada');
+                showNotification('⛶ Saliendo de pantalla completa');
             }
         }
 
-        // Mostrar configuración
-        function showSettings() {
-            const settings = `
-🎮 Controles disponibles:
-━━━━━━━━━━━━━━━━━━━
-🖱️ Ratón/Touch: Click directo
-⌨️ Teclado:
-  • ← → : Cambiar servidor
-  • ↑ ↓ : Navegar menú  
-  • Enter: Seleccionar
-  • ESC: Salir/Volver
-  • T: Modo teatro
-  • F: Pantalla completa
+        // Mostrar ayuda
+        function showHelp() {
+            const helpText = `
+🆘 AYUDA - JFUT
 
-📱 Móvil: Touch optimizado
-📺 Smart TV: Control remoto compatible
+📱 PROBLEMAS COMUNES EN MÓVILES:
+• "Page does not exist" → Usa "🔗 Abrir Directo"
+• Stream no carga → Prueba otro servidor
+• Pantalla negra → Recarga el stream
+
+🎮 CONTROLES DISPONIBLES:
+🔄 Recargar - Refresca el stream actual
+📡 Servidor - Cambia entre servidores
+🔗 Abrir Directo - Abre en nueva pestaña
+📋 Copiar URL - Copia enlace directo
+
+📺 MODOS DE VISUALIZACIÓN:
+📺 Pantalla Grande - Modo teatro
+⛶ Pantalla Completa - Fullscreen
+
+💡 CONSEJOS:
+• En móviles, mejor usar "Abrir Directo"
+• Si hay problemas, prueba diferentes servidores
+• GitHub Pages tiene limitaciones con ciertos streams
+
+¿Aún tienes problemas? El código está optimizado para múltiples dispositivos.
             `;
-            showNotification(settings);
+            showNotification(helpText);
+        }
+
+        // Recargar página
+        function refreshPage() {
+            showNotification('🔄 Recargando página...');
+            setTimeout(() => {
+                window.location.reload();
+            }, 1500);
         }
 
         // Mostrar notificación mejorada
         function showNotification(message) {
+            // Remover notificación anterior si existe
+            const existingNotification = document.querySelector('.notification');
+            if (existingNotification) {existingNotification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    existingNotification.remove();
+                }, 300);
+            }
+
+            // Crear nueva notificación
             const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: rgba(0, 255, 135, 0.95);
-                color: black;
-                padding: 15px 25px;
-                border-radius: 12px;
-                font-weight: bold;
-                z-index: 10000;
-                animation: slideIn 0.4s ease;
-                max-width: 350px;
-                word-wrap: break-word;
-                white-space: pre-line;
-                font-size: 0.9rem;
-                border: 2px solid #00ff87;
-                backdrop-filter: blur(10px);
-                box-shadow: 0 10px 30px rgba(0, 255, 135, 0.3);
-            `;
+            notification.className = 'notification';
             notification.textContent = message;
+            
             document.body.appendChild(notification);
 
+            // Auto-remover después de 5 segundos
             setTimeout(() => {
-                notification.style.animation = 'slideOut 0.4s ease';
-                setTimeout(() => {
-                    if (notification.parentNode) {
-                        notification.remove();
-                    }
-                }, 400);
-            }, message.length > 100 ? 5000 : 3000);
-        }
-
-        // Actualizar elementos enfocables
-        function updateFocusableElements() {
-            focusableElements = Array.from(document.querySelectorAll('.focusable'));
-        }
-
-        // Configurar navegación con teclado/control remoto
-        function setupKeyboardNavigation() {
-            document.addEventListener('keydown', (e) => {
-                switch(e.key) {
-                    case 'ArrowUp':
-                        e.preventDefault();
-                        navigateUp();
-                        break;
-                    case 'ArrowDown':
-                        e.preventDefault();
-                        navigateDown();
-                        break;
-                    case 'ArrowLeft':
-                        e.preventDefault();
-                        navigateLeft();
-                        break;
-                    case 'ArrowRight':
-                        e.preventDefault();
-                        navigateRight();
-                        break;
-                    case 'Enter':
-                        e.preventDefault();
-                        activateSelected();
-                        break;
-                    case 'Escape':
-                        e.preventDefault();
-                        handleEscape();
-                        break;
-                    case 't':
-                    case 'T':
-                        e.preventDefault();
-                        toggleTheaterMode();
-                        break;
-                    case 'f':
-                    case 'F':
-                        e.preventDefault();
-                        toggleFullscreen();
-                        break;
-                    case 'r':
-                    case 'R':
-                        e.preventDefault();
-                        reloadStream();
-                        break;
-                    case ' ':
-                        e.preventDefault();
-                        toggleAutoplay();
-                        break;
-                }
-            });
-        }
-
-        // Navegación hacia arriba
-        function navigateUp() {
-            updateFocusableElements();
-            if (focusableElements.length > 0) {
-                selectedIndex = Math.max(0, selectedIndex - 1);
-                focusableElements[selectedIndex].focus();
-            }
-        }
-
-        // Navegación hacia abajo
-        function navigateDown() {
-            updateFocusableElements();
-            if (focusableElements.length > 0) {
-                selectedIndex = Math.min(focusableElements.length - 1, selectedIndex + 1);
-                focusableElements[selectedIndex].focus();
-            }
-        }
-
-        // Navegación hacia la izquierda (cambiar servidor anterior)
-        function navigateLeft() {
-            if (currentMatch && currentMatch.streams.length > 1) {
-                currentStreamIndex = currentStreamIndex === 0 ? 
-                    currentMatch.streams.length - 1 : currentStreamIndex - 1;
-                const newStream = currentMatch.streams[currentStreamIndex];
-                loadStream(newStream.url);
-                showNotification(`📡 ${newStream.name}`);
-            }
-        }
-
-        // Navegación hacia la derecha (cambiar servidor siguiente)
-        function navigateRight() {
-            changeQuality();
-        }
-
-        // Activar elemento seleccionado
-        function activateSelected() {
-            updateFocusableElements();
-            if (focusableElements[selectedIndex]) {
-                focusableElements[selectedIndex].click();
-            }
-        }
-
-        // Manejar tecla Escape
-        function handleEscape() {
-            if (document.fullscreenElement) {
-                toggleFullscreen();
-            } else if (isTheaterMode) {
-                toggleTheaterMode();
-            } else {
-                showNotification('🏠 Navegación: Usa las flechas para moverte');
-            }
-        }
-
-        // Estilos CSS adicionales para animaciones
-        const additionalStyles = `
-            @keyframes slideIn {
-                from {
-                    transform: translateX(100%);
-                    opacity: 0;
-                }
-                to {
-                    transform: translateX(0);
-                    opacity: 1;
-                }
-            }
-
-            @keyframes slideOut {
-                from {
-                    transform: translateX(0);
-                    opacity: 1;
-                }
-                to {
-                    transform: translateX(100%);
-                    opacity: 0;
-                }
-            }
-
-            .notification-enter {
-                animation: slideIn 0.4s ease;
-            }
-
-            .notification-exit {
-                animation: slideOut 0.4s ease;
-            }
-        `;
-
-        // Agregar estilos adicionales
-        function addAdditionalStyles() {
-            const styleSheet = document.createElement('style');
-            styleSheet.textContent = additionalStyles;
-            document.head.appendChild(styleSheet);
-        }
-
-        // Event listeners adicionales
-        document.addEventListener('DOMContentLoaded', () => {
-            initApp();
-            addAdditionalStyles();
-        });
-
-        // Manejar visibilidad de la página
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                console.log('Página oculta - pausando actualizaciones');
-            } else {
-                console.log('Página visible - reanudando');
-                if (autoplayEnabled && currentMatch) {
+                if (notification.parentNode) {
+                    notification.style.animation = 'slideOut 0.3s ease';
                     setTimeout(() => {
+                        if (notification.parentNode) {
+                            notification.remove();
+                        }
+                    }, 300);
+                }
+            }, 5000);
+        }
+
+        // Manejar teclas de acceso rápido
+        document.addEventListener('keydown', function(e) {
+            switch(e.key) {
+                case 'F11':
+                    e.preventDefault();
+                    toggleFullscreen();
+                    break;
+                case 'r':
+                case 'R':
+                    if (e.ctrlKey || e.metaKey) {
+                        e.preventDefault();
                         reloadStream();
-                    }, 1000);
-                }
-            }
-        });
-
-        // Manejar errores de iframe
-        window.addEventListener('message', (event) => {
-            if (event.data && typeof event.data === 'string') {
-                try {
-                    const data = JSON.parse(event.data);
-                    if (data.event === 'video-error') {
-                        showNotification('⚠️ Error en el stream - Cambiando servidor...');
-                        setTimeout(changeQuality, 2000);
                     }
-                } catch (e) {
-                    // Ignorar mensajes que no son JSON
-                }
+                    break;
+                case 'Escape':
+                    if (isTheaterMode) {
+                        toggleTheaterMode();
+                    }
+                    break;
             }
         });
 
-        // Auto-actualización de partidos (cada 30 segundos)
-        setInterval(() => {
-            if (!document.hidden) {
-                // Simular actualización de datos
-                loadMatches();
-            }
-        }, 30000);
+        // Manejar cambios de orientación en móviles
+        window.addEventListener('orientationchange', function() {
+            setTimeout(() => {
+                if (currentMatch && currentMatch.streams[currentStreamIndex]) {
+                    reloadStream();
+                }
+            }, 500);
+        });
 
-        // Inicializar cuando la página esté lista
+        // Prevenir zoom en móviles al hacer doble tap
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+
+        // Inicializar cuando la página se carga
+        document.addEventListener('DOMContentLoaded', initApp);
+
+        // Backup init si DOMContentLoaded ya pasó
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initApp);
         } else {
             initApp();
         }
+
+        console.log('JFUT - Sistema cargado correctamente');
     </script>
 </body>
 </html>
